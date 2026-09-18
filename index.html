@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zyrox AI — Login</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0d0505;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: #160808;
+      border: 1px solid #2a1010;
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 40px rgba(255, 0, 0, 0.08);
+    }
+    .logo {
+      width: 65px;
+      height: 65px;
+      background: #ff2b2b;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 34px;
+      font-weight: 900;
+      color: #fff;
+      box-shadow: 0 0 35px rgba(255, 43, 43, 0.6);
+    }
+    h1 {
+      text-align: center;
+      font-size: 30px;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
+      background: linear-gradient(90deg, #ff2b2b, #ff6b6b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      text-align: center;
+      color: #8a5555;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #b08080;
+      margin-bottom: 8px;
+      margin-top: 18px;
+    }
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #0d0505;
+      border: 1px solid #2a1010;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    input:focus {
+      border-color: #ff2b2b;
+      box-shadow: 0 0 0 3px rgba(255, 43, 43, 0.15);
+    }
+    input::placeholder { color: #5a3030; }
+    .hint { font-size: 11px; color: #8a5555; margin-top: 6px; }
+    button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(90deg, #ff2b2b, #ff5252);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: all 0.2s;
+      box-shadow: 0 0 25px rgba(255, 43, 43, 0.4);
+      letter-spacing: 0.5px;
+    }
+    button:hover {
+      box-shadow: 0 0 40px rgba(255, 43, 43, 0.7);
+      transform: translateY(-1px);
+    }
+    .switch {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #8a5555;
+    }
+    .switch a {
+      color: #ff5252;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #2a1010;
+      font-size: 11px;
+      color: #5a3030;
+    }
+    #welcomeScreen { display: none; text-align: center; }
+    #welcomeScreen h1 { font-size: 30px; margin-bottom: 12px; }
+    #welcomeScreen p { color: #b08080; margin-bottom: 8px; }
+    .badge {
+      display: inline-block;
+      background: #1a0808;
+      border: 1px solid #ff2b2b;
+      color: #ff5252;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-top: 15px;
+    }
+    .ai-btn { margin-top: 25px; }
+    .logout-btn {
+      background: #2a1010 !important;
+      box-shadow: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <!-- REGISTER SCREEN -->
+    <div id="registerScreen">
+      <div class="logo">Z</div>
+      <h1>ZYROX AI</h1>
+      <p class="subtitle">Create your account</p>
+
+      <label>Name</label>
+      <input type="text" id="regName" placeholder="Enter your name">
+
+      <label>Gmail</label>
+      <input type="email" id="regEmail" placeholder="Enter your Gmail">
+
+      <label>Password</label>
+      <input type="password" id="regPassword" placeholder="Enter your password">
+      <p class="hint">Minimum 6 characters</p>
+
+      <label>Age</label>
+      <input type="number" id="regAge" placeholder="Enter your age">
+
+      <button onclick="register()">🔥 Register</button>
+
+      <p class="switch">Already have an account? <a onclick="showLogin()">Login</a></p>
+      <p class="footer">© 2026 Zyrox AI — All rights reserved</p>
+    </div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" style="display:none;">
+      <div class="logo">Z</div>
+      <h1>ZYROX AI</h1>
+      <p class="subtitle">Login to your account</p>
+
+      <label>Gmail</label>
+      <input type="email" id="loginEmail" placeholder="Enter your Gmail">
+
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="Enter your password">
+
+      <button onclick="login()">🔐 Login</button>
+
+      <p class="switch">Don't have an account? <a onclick="showRegister()">Register</a></p>
+      <p class="footer">© 2026 Zyrox AI — All rights reserved</p>
+    </div>
+
+    <!-- WELCOME SCREEN -->
+    <div id="welcomeScreen">
+      <div class="logo">Z</div>
+      <h1 id="welcomeName">Kumusta!</h1>
+      <p id="welcomeEmail"></p>
+      <span class="badge" id="welcomeAge"></span>
+      <button class="ai-btn" onclick="alert('AI Video Generator — coming soon!')">🎬 Generate AI Video</button>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+  </div>
+
+  <script>
+    // ===== REGISTER =====
+    function register() {
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const age = document.getElementById('regAge').value.trim();
+
+      if (!name) { alert('Ilagay ang iyong pangalan!'); return; }
+      if (!email.includes('@')) { alert('Ilagay ang tamang Gmail!'); return; }
+      if (password.length < 6) { alert('Ang password ay dapat 6+ characters!'); return; }
+      if (!age) { alert('Ilagay ang iyong edad!'); return; }
+
+      // I-save ang account
+      const account = { name, email, password, age };
+      localStorage.setItem('zyrox_account', JSON.stringify(account));
+
+      alert('✅ Account created! Mag-login ka na ngayon.');
+      showLogin();
+    }
+
+    // ===== LOGIN =====
+    function login() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      const saved = localStorage.getItem('zyrox_account');
+      if (!saved) {
+        alert('❌ Walang account! Mag-register ka muna.');
+        showRegister();
+        return;
+      }
+
+      const account = JSON.parse(saved);
+
+      // I-check kung tugma ang email at password
+      if (email !== account.email) {
+        alert('❌ Mali ang Gmail! Subukan muli.');
+        return;
+      }
+      if (password !== account.password) {
+        alert('❌ Mali ang password! Subukan muli.');
+        return;
+      }
+
+      // Success — i-save ang session
+      localStorage.setItem('zyrox_session', JSON.stringify({
+        name: account.name,
+        email: account.email,
+        age: account.age
+      }));
+
+      alert('✅ Login successful!');
+      showWelcome(account.name, account.email, account.age);
+    }
+
+    // ===== SCREEN SWITCHERS =====
+    function showRegister() {
+      document.getElementById('registerScreen').style.display = 'block';
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('welcomeScreen').style.display = 'none';
+    }
+
+    function showLogin() {
+      document.getElementById('registerScreen').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'block';
+      document.getElementById('welcomeScreen').style.display = 'none';
+    }
+
+    function showWelcome(name, email, age) {
+      document.getElementById('registerScreen').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('welcomeScreen').style.display = 'block';
+      document.getElementById('welcomeName').textContent = 'Kumusta, ' + name + '! 🔥';
+      document.getElementById('welcomeEmail').textContent = email;
+      document.getElementById('welcomeAge').textContent = 'Age: ' + age;
+    }
+
+    function logout() {
+      localStorage.removeItem('zyrox_session');
+      location.reload();
+    }
+
+    // ===== AUTO LOGIN KUNG MAY SESSION =====
+    window.onload = function () {
+      const session = localStorage.getItem('zyrox_session');
+      if (session) {
+        const user = JSON.parse(session);
+        showWelcome(user.name, user.email, user.age);
+      }
+    };
+  </script>
+
+</body>
+</html>
