@@ -1,0 +1,2 @@
+# Zyrox-AI
+Free unlimited
