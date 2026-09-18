@@ -5,291 +5,748 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zyrox AI</title>
   <style>
+    /* ============ RESET ============ */
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #ff3b3b;
+      --red-light: #ff6b6b;
+      --red-dark: #cc0000;
+      --bg: #050101;
+      --glass-border: rgba(255, 60, 60, 0.15);
+      --text: #ffffff;
+      --text-muted: #997070;
+      --text-dim: #4a2525;
+      --green: #00ff88;
+    }
+
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #0d0505;
-      color: #fff;
+      font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 80% 60% at 20% 0%, rgba(255, 43, 43, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 100%, rgba(255, 43, 43, 0.12) 0%, transparent 60%);
+      background-attachment: fixed;
+      color: var(--text);
       min-height: 100vh;
-      padding: 20px;
+      padding: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
+      overflow-x: hidden;
+      animation: fadeIn 0.5s ease;
     }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 43, 43, 0.4), 0 0 60px rgba(255, 43, 43, 0.2); }
+      50% { box-shadow: 0 0 35px rgba(255, 43, 43, 0.7), 0 0 90px rgba(255, 43, 43, 0.35); }
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+
+    /* ============ GLASS CARD ============ */
     .card {
-      background: #160808;
-      border: 1px solid #2a1010;
-      border-radius: 20px;
-      padding: 40px 30px;
+      background: linear-gradient(145deg, rgba(22, 8, 8, 0.85), rgba(10, 3, 3, 0.95));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      padding: 50px 40px;
       width: 100%;
-      max-width: 420px;
-      box-shadow: 0 10px 40px rgba(255, 0, 0, 0.08);
+      max-width: 460px;
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.8),
+        0 0 60px rgba(255, 43, 43, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      position: relative;
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .wide { max-width: 900px; }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 60, 60, 0.8), transparent);
+    }
+
+    /* ============ LOGO ============ */
     .logo {
-      width: 65px; height: 65px;
-      background: #ff2b2b; border-radius: 16px;
+      width: 85px; height: 85px;
+      background: linear-gradient(145deg, #ff3b3b, #cc0000);
+      border-radius: 24px;
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 15px; font-size: 34px; font-weight: 900;
-      color: #fff; box-shadow: 0 0 35px rgba(255, 43, 43, 0.6);
+      margin: 0 auto 22px;
+      font-size: 44px; font-weight: 900;
+      color: #fff;
+      letter-spacing: -2px;
+      box-shadow:
+        0 0 50px rgba(255, 43, 43, 0.7),
+        inset 0 -4px 15px rgba(0, 0, 0, 0.5),
+        inset 0 4px 15px rgba(255, 255, 255, 0.25);
+      animation: float 4s ease-in-out infinite;
+      position: relative;
     }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.3), transparent 55%);
+      pointer-events: none;
+    }
+
+    .logo.sm { width: 60px; height: 60px; font-size: 30px; border-radius: 18px; }
+
+    /* ============ TYPOGRAPHY ============ */
     h1 {
-      text-align: center; font-size: 30px; letter-spacing: 1px;
-      margin-bottom: 5px;
-      background: linear-gradient(90deg, #ff2b2b, #ff6b6b);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-align: center;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ff3b3b, #ff9090, #ff3b3b);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 4s ease infinite;
     }
-    h2 { font-size: 20px; margin-bottom: 15px; color: #ff5252; }
+
+    h2 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      color: #fff;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    h2 .highlight {
+      background: linear-gradient(90deg, #ff3b3b, #ff9090);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
     .subtitle {
-      text-align: center; color: #8a5555; font-size: 11px;
-      letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      margin-bottom: 35px;
+      font-weight: 700;
     }
+
+    /* ============ FORM ============ */
     label {
-      display: block; font-size: 12px; font-weight: bold;
-      letter-spacing: 1px; text-transform: uppercase;
-      color: #b08080; margin-bottom: 8px; margin-top: 16px;
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 9px;
+      margin-top: 20px;
     }
+
     input, select {
-      width: 100%; padding: 14px 16px;
-      background: #0d0505; border: 1px solid #2a1010;
-      border-radius: 10px; color: #fff; font-size: 15px;
-      outline: none; transition: 0.2s;
+      width: 100%;
+      padding: 17px 20px;
+      background: rgba(8, 2, 2, 0.85);
+      border: 1.5px solid rgba(60, 20, 20, 0.8);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     input:focus, select:focus {
-      border-color: #ff2b2b;
-      box-shadow: 0 0 0 3px rgba(255, 43, 43, 0.15);
+      border-color: var(--red);
+      background: rgba(25, 8, 8, 0.95);
+      box-shadow:
+        0 0 0 4px rgba(255, 43, 43, 0.15),
+        0 0 30px rgba(255, 43, 43, 0.3);
+      transform: translateY(-2px);
     }
-    input::placeholder { color: #5a3030; }
+
+    input::placeholder { color: var(--text-dim); }
+
+    /* ============ BUTTONS ============ */
     button {
-      width: 100%; padding: 15px;
-      background: linear-gradient(90deg, #ff2b2b, #ff5252);
-      color: #fff; border: none; border-radius: 10px;
-      font-size: 15px; font-weight: bold; cursor: pointer;
-      margin-top: 20px; transition: 0.2s;
-      box-shadow: 0 0 25px rgba(255, 43, 43, 0.4);
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #ff3b3b 0%, #ff6b6b 50%, #ff3b3b 100%);
+      background-size: 200% auto;
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow:
+        0 8px 30px rgba(255, 43, 43, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+      font-family: inherit;
     }
-    button:hover { box-shadow: 0 0 40px rgba(255, 43, 43, 0.7); transform: translateY(-1px); }
-    .btn-sm { padding: 8px 12px; font-size: 12px; margin: 0; width: auto; }
-    .btn-green { background: linear-gradient(90deg, #00b85c, #00ff88); box-shadow: 0 0 20px rgba(0,255,136,0.3); }
-    .btn-gray { background: #2a1010; box-shadow: none; }
-    .btn-red { background: linear-gradient(90deg, #b80000, #ff2b2b); }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.7s;
+    }
+
+    button:hover::before { left: 100%; }
+    button:hover {
+      background-position: right center;
+      box-shadow: 0 12px 45px rgba(255, 43, 43, 0.8);
+      transform: translateY(-3px);
+      letter-spacing: 1.5px;
+    }
+    button:active { transform: translateY(0); }
+
+    .btn-sm {
+      padding: 10px 16px;
+      font-size: 12px;
+      margin: 0;
+      width: auto;
+      border-radius: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-green {
+      background: linear-gradient(135deg, #00b85c, #00ff88);
+      color: #042a14;
+      box-shadow: 0 6px 25px rgba(0, 255, 136, 0.4);
+    }
+
+    .btn-gray {
+      background: linear-gradient(135deg, rgba(30, 12, 12, 0.9), rgba(45, 18, 18, 0.9));
+      border: 1px solid rgba(255, 60, 60, 0.15);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-red { background: linear-gradient(135deg, #cc0000, #ff3b3b); }
+
+    /* ============ SWITCH ============ */
     .switch {
-      text-align: center; margin-top: 18px;
-      font-size: 13px; color: #8a5555;
-    }
-    .switch a { color: #ff5252; font-weight: bold; cursor: pointer; text-decoration: none; }
-    .footer {
-      text-align: center; margin-top: 22px; padding-top: 18px;
-      border-top: 1px solid #2a1010; font-size: 11px; color: #5a3030;
-    }
-    .badge {
-      display: inline-block; background: #1a0808;
-      border: 1px solid #ff2b2b; color: #ff5252;
-      padding: 6px 14px; border-radius: 20px;
-      font-size: 12px; margin-top: 10px;
-    }
-    .credit-badge {
-      display: inline-block; background: linear-gradient(90deg,#ff2b2b,#ff5252);
-      color: #fff; padding: 8px 18px; border-radius: 20px;
-      font-size: 14px; font-weight: bold; margin-top: 12px;
-    }
-    /* Admin table */
-    table {
-      width: 100%; border-collapse: collapse; margin-top: 15px;
+      text-align: center;
+      margin-top: 26px;
       font-size: 13px;
+      color: var(--text-muted);
     }
+
+    .switch a {
+      color: var(--red-light);
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 1px;
+      transition: all 0.25s;
+    }
+
+    .switch a:hover {
+      color: #ff9090;
+      border-bottom-color: #ff9090;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(60, 20, 20, 0.6);
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
+
+    /* ============ CREDIT BADGE ============ */
+    .credit-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff3b3b, #ff6b6b);
+      color: #fff;
+      padding: 14px 30px;
+      border-radius: 30px;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      box-shadow:
+        0 8px 30px rgba(255, 43, 43, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      animation: glowPulse 2.5s ease-in-out infinite;
+    }
+
+    /* ============ DASHBOARD ============ */
+    .dash-wrap {
+      display: flex;
+      gap: 24px;
+      width: 100%;
+      max-width: 1150px;
+      align-items: flex-start;
+    }
+
+    .dash-side {
+      background: linear-gradient(145deg, rgba(22, 8, 8, 0.85), rgba(10, 3, 3, 0.95));
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 30px 22px;
+      width: 270px;
+      flex-shrink: 0;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .dash-side::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 60, 60, 0.8), transparent);
+    }
+
+    .dash-side .brand {
+      display: flex; align-items: center; gap: 14px;
+      padding-bottom: 22px; margin-bottom: 22px;
+      border-bottom: 1px solid rgba(60, 20, 20, 0.6);
+    }
+
+    .dash-side .brand span {
+      font-size: 22px; font-weight: 900;
+      background: linear-gradient(90deg, #ff3b3b, #ff9090);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+    }
+
+    .user-info {
+      text-align: center;
+      margin-bottom: 25px;
+      padding: 15px;
+      background: rgba(8, 2, 2, 0.5);
+      border: 1px solid rgba(60, 20, 20, 0.5);
+      border-radius: 14px;
+    }
+
+    .user-info .name {
+      font-weight: 800; font-size: 16px; margin-bottom: 5px;
+      background: linear-gradient(90deg, #ff3b3b, #ff9090);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .user-info .email {
+      font-size: 12px; color: var(--text-muted);
+      word-break: break-all;
+    }
+
+    .side-btn {
+      display: flex; align-items: center; gap: 12px;
+      width: 100%;
+      padding: 14px 18px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-align: left;
+      font-family: inherit;
+      letter-spacing: 0.5px;
+    }
+
+    .side-btn:hover {
+      background: rgba(255, 43, 43, 0.1);
+      border-color: rgba(255, 60, 60, 0.3);
+      color: #fff;
+      transform: translateX(5px);
+      box-shadow: 0 5px 20px rgba(255, 43, 43, 0.15);
+    }
+
+    .side-btn.active {
+      background: linear-gradient(135deg, rgba(255, 43, 43, 0.2), rgba(255, 43, 43, 0.05));
+      border-color: rgba(255, 60, 60, 0.5);
+      color: #fff;
+      box-shadow: 0 5px 25px rgba(255, 43, 43, 0.25);
+    }
+
+    .side-btn::before { display: none; }
+
+    .dash-main {
+      background: linear-gradient(145deg, rgba(22, 8, 8, 0.85), rgba(10, 3, 3, 0.95));
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      flex: 1;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 550px;
+      position: relative;
+    }
+
+    .dash-main::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 60, 60, 0.8), transparent);
+    }
+
+    .dash-panel { animation: fadeIn 0.4s ease; }
+    .dash-panel h2 { text-align: left; margin-bottom: 10px; }
+    .panel-desc {
+      color: var(--text-muted); font-size: 14px;
+      margin-bottom: 30px; text-align: left;
+    }
+
+    /* ============ STATS ============ */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .stat {
+      background: rgba(8, 2, 2, 0.6);
+      border: 1px solid rgba(60, 20, 20, 0.6);
+      border-radius: 18px;
+      padding: 24px;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .stat:hover {
+      border-color: rgba(255, 60, 60, 0.5);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(255, 43, 43, 0.2);
+    }
+
+    .stat:hover::before { opacity: 1; }
+
+    .stat .label {
+      font-size: 11px; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 2px;
+      font-weight: 700; margin-bottom: 10px;
+    }
+
+    .stat .value {
+      font-size: 30px; font-weight: 900;
+      background: linear-gradient(90deg, #ff3b3b, #ff9090);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+    }
+
+    /* ============ TABLE ============ */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 20px;
+      font-size: 13px;
+      background: rgba(8, 2, 2, 0.5);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(60, 20, 20, 0.6);
+    }
+
     th, td {
-      padding: 10px; text-align: left;
-      border-bottom: 1px solid #2a1010;
+      padding: 16px 18px;
+      text-align: left;
+      border-bottom: 1px solid rgba(60, 20, 20, 0.4);
     }
-    th { color: #ff5252; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-    td { color: #c0a0a0; }
-    .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-    .hidden { display: none !important; }
-    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-    .tab {
-      flex: 1; padding: 10px; text-align: center;
-      background: #0d0505; border: 1px solid #2a1010;
-      border-radius: 10px; cursor: pointer; font-size: 13px;
-      color: #8a5555; transition: 0.2s;
+
+    th {
+      background: rgba(255, 43, 43, 0.1);
+      color: var(--red-light);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 800;
     }
-    .tab.active { background: #2a1010; color: #ff5252; border-color: #ff2b2b; }
-    .credit-packs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
+
+    td { color: #d0b0b0; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 43, 43, 0.06); }
+
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* ============ PACKS ============ */
+    .credit-packs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      margin-top: 25px;
+    }
+
     .pack {
-      background: #0d0505; border: 1px solid #2a1010;
-      border-radius: 12px; padding: 18px 10px; text-align: center;
-      cursor: pointer; transition: 0.2s;
+      background: linear-gradient(145deg, rgba(20, 8, 8, 0.8), rgba(8, 2, 2, 0.9));
+      border: 1.5px solid rgba(60, 20, 20, 0.6);
+      border-radius: 20px;
+      padding: 32px 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
     }
-    .pack:hover { border-color: #ff2b2b; box-shadow: 0 0 20px rgba(255,43,43,0.3); }
-    .pack .amount { font-size: 22px; font-weight: bold; color: #ff5252; }
-    .pack .price { font-size: 12px; color: #8a5555; margin-top: 5px; }
-    .empty { text-align: center; color: #5a3030; padding: 30px 0; font-size: 13px; }
+
+    .pack::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .pack:hover {
+      border-color: var(--red);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(255, 43, 43, 0.4);
+    }
+
+    .pack:hover::before { opacity: 1; }
+
+    .pack .amount {
+      font-size: 38px; font-weight: 900;
+      background: linear-gradient(90deg, #ff3b3b, #ff9090);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .pack .price {
+      font-size: 14px; color: var(--text-muted);
+      font-weight: 700; letter-spacing: 1px;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ============ SCROLLBAR ============ */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #ff3b3b, #cc0000);
+      border-radius: 10px;
+      border: 2px solid var(--bg);
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 850px) {
+      .dash-wrap { flex-direction: column; }
+      .dash-side { width: 100%; }
+      .card { padding: 40px 24px; }
+      h1 { font-size: 28px; }
+      .dash-main { padding: 28px 22px; }
+    }
   </style>
 </head>
 <body>
 
-<div class="card" id="app">
+<!-- ============ REGISTER ============ -->
+<div id="registerScreen" class="card">
+  <div class="logo">Z</div>
+  <h1>ZYROX AI</h1>
+  <p class="subtitle">Create your account</p>
 
-  <!-- REGISTER -->
-  <div id="registerScreen">
-    <div class="logo">Z</div>
-    <h1>ZYROX AI</h1>
-    <p class="subtitle">Create your account</p>
-    <label>Name</label>
-    <input type="text" id="regName" placeholder="Enter your name">
-    <label>Gmail</label>
-    <input type="email" id="regEmail" placeholder="Enter your Gmail">
-    <label>Password</label>
-    <input type="password" id="regPassword" placeholder="Enter your password">
-    <label>Age</label>
-    <input type="number" id="regAge" placeholder="Enter your age">
-    <button onclick="register()">🔥 Register</button>
-    <p class="switch">Already have an account? <a onclick="showScreen('loginScreen')">Login</a></p>
-    <p class="footer">© 2026 Zyrox AI</p>
-  </div>
+  <label>Name</label>
+  <input type="text" id="regName" placeholder="Enter your name">
 
-  <!-- LOGIN -->
-  <div id="loginScreen" class="hidden">
-    <div class="logo">Z</div>
-    <h1>ZYROX AI</h1>
-    <p class="subtitle">Login to your account</p>
-    <label>Gmail</label>
-    <input type="email" id="loginEmail" placeholder="Enter your Gmail">
-    <label>Password</label>
-    <input type="password" id="loginPassword" placeholder="Enter your password">
-    <button onclick="login()">🔐 Login</button>
-    <p class="switch">Don't have an account? <a onclick="showScreen('registerScreen')">Register</a></p>
-    <p class="footer">© 2026 Zyrox AI</p>
-  </div>
+  <label>Gmail</label>
+  <input type="email" id="regEmail" placeholder="Enter your Gmail">
 
-  <!-- WELCOME / USER DASHBOARD -->
-  <div id="welcomeScreen" class="hidden" style="text-align:center;">
-    <div class="logo">Z</div>
-    <h1 id="welcomeName">Kumusta!</h1>
-    <p id="welcomeEmail" style="color:#b08080;margin-top:8px;"></p>
-    <span class="credit-badge" id="creditDisplay">💎 0 Credits</span>
-    <div style="margin-top:20px;">
-      <button onclick="showScreen('buyScreen')">💳 Buy Credits</button>
-      <button onclick="showScreen('generatorScreen')">🎬 Generate AI Video</button>
-      <button class="btn-gray" onclick="showAdminOrLogout()">⚙️ Admin Panel</button>
-      <button class="btn-gray" onclick="logout()">Logout</button>
+  <label>Password</label>
+  <input type="password" id="regPassword" placeholder="Enter your password">
+
+  <label>Age</label>
+  <input type="number" id="regAge" placeholder="Enter your age">
+
+  <button onclick="register()">🔥 REGISTER</button>
+
+  <p class="switch">Already have an account? <a onclick="showScreen('loginScreen')">Login</a></p>
+  <p class="footer">© 2026 ZYROX AI</p>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginScreen" class="card hidden">
+  <div class="logo">Z</div>
+  <h1>ZYROX AI</h1>
+  <p class="subtitle">Login to your account</p>
+
+  <label>Gmail</label>
+  <input type="email" id="loginEmail" placeholder="Enter your Gmail">
+
+  <label>Password</label>
+  <input type="password" id="loginPassword" placeholder="Enter your password">
+
+  <button onclick="login()">🔐 LOGIN</button>
+
+  <p class="switch">Don't have an account? <a onclick="showScreen('registerScreen')">Register</a></p>
+  <p class="footer">© 2026 ZYROX AI</p>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div id="dashboardScreen" class="dash-wrap hidden">
+  <aside class="dash-side">
+    <div class="brand">
+      <div class="logo sm">Z</div>
+      <span>ZYROX</span>
     </div>
-  </div>
 
-  <!-- BUY CREDITS -->
-  <div id="buyScreen" class="hidden">
-    <h2>💳 Buy Credits</h2>
-    <p style="color:#8a5555;font-size:13px;">Pumili ng package para dagdagan ang iyong credits.</p>
-    <div class="credit-packs">
-      <div class="pack" onclick="buyCredits(10)">
-        <div class="amount">10</div>
-        <div class="price">₱50</div>
+    <div class="user-info">
+      <div class="name" id="sideName">—</div>
+      <div class="email" id="sideEmail">—</div>
+    </div>
+
+    <button class="side-btn active" onclick="showPanel('homePanel', this)">🏠 Home</button>
+    <button class="side-btn" onclick="showPanel('buyPanel', this)">💳 Buy Credits</button>
+    <button class="side-btn" onclick="showPanel('genPanel', this)">🎬 AI Generator</button>
+    <button class="side-btn" onclick="showPanel('adminPanel', this)">👑 Admin Panel</button>
+    <button class="side-btn" onclick="logout()">🚪 Logout</button>
+  </aside>
+
+  <main class="dash-main">
+    <!-- HOME -->
+    <div id="homePanel" class="dash-panel">
+      <h2>Welcome back, <span class="highlight" id="welcomeName">User</span>! 🔥</h2>
+      <p class="panel-desc">Welcome to your Zyrox AI dashboard.</p>
+
+      <div style="text-align:center;margin:30px 0;">
+        <span class="credit-badge" id="creditDisplay">💎 0 Credits</span>
       </div>
-      <div class="pack" onclick="buyCredits(50)">
-        <div class="amount">50</div>
-        <div class="price">₱200</div>
-      </div>
-      <div class="pack" onclick="buyCredits(150)">
-        <div class="amount">150</div>
-        <div class="price">₱500</div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="label">Credits</div>
+          <div class="value" id="statCredits">0</div>
+        </div>
+        <div class="stat">
+          <div class="label">Videos Made</div>
+          <div class="value" id="statVideos">0</div>
+        </div>
+        <div class="stat">
+          <div class="label">Member Since</div>
+          <div class="value" style="font-size:16px;" id="statSince">—</div>
+        </div>
       </div>
     </div>
-    <button class="btn-gray" onclick="showScreen('welcomeScreen')" style="margin-top:20px;">← Back</button>
-  </div>
 
-  <!-- GENERATOR -->
-  <div id="generatorScreen" class="hidden">
-    <h2>🎬 AI Video Generator</h2>
-    <p style="color:#8a5555;font-size:13px;">Gumawa ng AI video (demo lang — 1 credit bawat generate).</p>
-    <label>Prompt</label>
-    <input type="text" id="promptInput" placeholder="e.g. Baby Shark dancing underwater">
-    <button onclick="generateVideo()">✨ Generate (1 credit)</button>
-    <button class="btn-gray" onclick="showScreen('welcomeScreen')">← Back</button>
-  </div>
+    <!-- BUY -->
+    <div id="buyPanel" class="dash-panel hidden">
+      <h2>💳 Buy Credits</h2>
+      <p class="panel-desc">Choose a package to add credits to your account.</p>
+      <div class="credit-packs">
+        <div class="pack" onclick="buyCredits(10)"><div class="amount">10</div><div class="price">$1</div></div>
+        <div class="pack" onclick="buyCredits(50)"><div class="amount">50</div><div class="price">$4</div></div>
+        <div class="pack" onclick="buyCredits(150)"><div class="amount">150</div><div class="price">$10</div></div>
+      </div>
+    </div>
 
-  <!-- ADMIN PANEL -->
-  <div id="adminScreen" class="hidden">
-    <h2>👑 Admin Panel</h2>
-    <p style="color:#8a5555;font-size:13px;">Lahat ng accounts na nag-register.</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Gmail</th>
-          <th>Age</th>
-          <th>Credits</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="adminTable"></tbody>
-    </table>
-    <button class="btn-gray" onclick="showScreen('welcomeScreen')">← Back</button>
-  </div>
+    <!-- GENERATOR -->
+    <div id="genPanel" class="dash-panel hidden">
+      <h2>🎬 AI Video Generator</h2>
+      <p class="panel-desc">Generate an AI video (1 credit per generation).</p>
+      <label>Prompt</label>
+      <input type="text" id="promptInput" placeholder="e.g. Baby Shark dancing underwater">
+      <button onclick="generateVideo()">✨ GENERATE (1 credit)</button>
+    </div>
 
-  <!-- ADMIN PANEL (WIDE) -->
-  <div id="adminWide" class="wide hidden">
-    <h2>👑 Admin Panel</h2>
-    <p style="color:#8a5555;font-size:13px;">Lahat ng accounts na nag-register.</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Gmail</th>
-          <th>Age</th>
-          <th>Credits</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="adminTableWide"></tbody>
-    </table>
-    <button class="btn-gray" onclick="showScreen('welcomeScreen')">← Back</button>
-  </div>
+    <!-- ADMIN -->
+    <div id="adminPanel" class="dash-panel hidden">
+      <h2>👑 Admin Panel</h2>
+      <p class="panel-desc">All registered accounts.</p>
 
+      <div style="display:flex;gap:20px;margin-bottom:15px;flex-wrap:wrap;">
+        <div style="color:#997070;font-size:13px;">Total Users: <strong style="color:#ff5252;" id="totalUsers">0</strong></div>
+        <div style="color:#997070;font-size:13px;">Total Credits: <strong style="color:#ff5252;" id="totalCredits">0</strong></div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Gmail</th>
+            <th>Age</th>
+            <th>Credits</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="adminTable"></tbody>
+      </table>
+    </div>
+  </main>
 </div>
 
 <script>
-  // ============ ADMIN CONFIG ============
-  // Ito ang admin email. Palitan mo ng sarili mong Gmail.
-  const ADMIN_EMAIL = "benjaminedimalen06@gmail.com";
+  const ADMIN_EMAIL = "benjaminedimalen06@gmail.com"; // ← CHANGE TO YOUR OWN GMAIL
 
-  // ============ STORAGE HELPERS ============
-  function getUsers() {
-    return JSON.parse(localStorage.getItem('zyrox_users') || '[]');
-  }
-  function saveUsers(users) {
-    localStorage.setItem('zyrox_users', JSON.stringify(users));
-  }
-  function getSession() {
-    return JSON.parse(localStorage.getItem('zyrox_session') || 'null');
-  }
-  function saveSession(user) {
-    localStorage.setItem('zyrox_session', JSON.stringify(user));
-  }
-  function clearSession() {
-    localStorage.removeItem('zyrox_session');
-  }
+  function getUsers() { return JSON.parse(localStorage.getItem('zyrox_users') || '[]'); }
+  function saveUsers(u) { localStorage.setItem('zyrox_users', JSON.stringify(u)); }
+  function getSession() { return JSON.parse(localStorage.getItem('zyrox_session') || 'null'); }
 
-  // ============ SCREEN NAVIGATION ============
   function showScreen(id) {
-    ['registerScreen','loginScreen','welcomeScreen','buyScreen','generatorScreen','adminScreen','adminWide']
-      .forEach(s => document.getElementById(s).classList.add('hidden'));
+    ['registerScreen','loginScreen','dashboardScreen'].forEach(s => {
+      document.getElementById(s).classList.add('hidden');
+    });
+    document.getElementById(id).classList.remove('hidden');
+  }
 
-    const screen = document.getElementById(id);
-    screen.classList.remove('hidden');
-
-    // Palitan ang card width kung admin
-    const card = document.getElementById('app');
-    if (id === 'adminWide') {
-      card.classList.add('wide');
-    } else {
-      card.classList.remove('wide');
+  function showPanel(id, btn) {
+    if (id === 'adminPanel' && getSession().email !== ADMIN_EMAIL) {
+      alert('❌ You are not an admin.');
+      return;
     }
 
-    if (id === 'adminWide' || id === 'adminScreen') renderAdminTable();
-    if (id === 'welcomeScreen') updateWelcome();
+    document.querySelectorAll('.dash-panel').forEach(p => p.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+    document.querySelectorAll('.side-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    if (id === 'adminPanel') renderAdminTable();
   }
 
-  // ============ REGISTER ============
   function register() {
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim().toLowerCase();
@@ -297,23 +754,26 @@
     const age = document.getElementById('regAge').value.trim();
 
     if (!name || !email.includes('@') || password.length < 6 || !age) {
-      alert('Punuin lahat ng fields. Password 6+ characters, valid Gmail.');
+      alert('Please fill all fields. Password 6+ chars, valid Gmail.');
       return;
     }
 
     const users = getUsers();
     if (users.find(u => u.email === email)) {
-      alert('❌ May account na gamit ang Gmail na ito!');
+      alert('❌ An account already exists with this Gmail!');
       return;
     }
 
-    users.push({ name, email, password, age, credits: 0 });
+    users.push({
+      name, email, password, age,
+      credits: 0, videos: 0,
+      since: new Date().toLocaleDateString()
+    });
     saveUsers(users);
-    alert('✅ Account created! Mag-login ka na.');
+    alert('✅ Account created! Please log in.');
     showScreen('loginScreen');
   }
 
-  // ============ LOGIN ============
   function login() {
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
     const password = document.getElementById('loginPassword').value;
@@ -321,123 +781,109 @@
     const users = getUsers();
     const user = users.find(u => u.email === email);
 
-    if (!user) { alert('❌ Walang account sa Gmail na ito. Mag-register ka muna.'); return; }
-    if (user.password !== password) { alert('❌ Mali ang password!'); return; }
+    if (!user) { alert('❌ No account found with this Gmail.'); return; }
+    if (user.password !== password) { alert('❌ Incorrect password!'); return; }
 
-    saveSession({ email: user.email });
-    alert('✅ Login successful!');
-    showScreen('welcomeScreen');
+    localStorage.setItem('zyrox_session', JSON.stringify({ email: user.email }));
+    updateDashboard();
+    showScreen('dashboardScreen');
   }
 
-  // ============ LOGOUT ============
   function logout() {
-    clearSession();
+    localStorage.removeItem('zyrox_session');
     showScreen('loginScreen');
   }
 
-  // ============ UPDATE WELCOME ============
-  function updateWelcome() {
+  function updateDashboard() {
     const session = getSession();
     if (!session) { showScreen('loginScreen'); return; }
     const user = getUsers().find(u => u.email === session.email);
-    if (!user) { clearSession(); showScreen('loginScreen'); return; }
+    if (!user) { logout(); return; }
 
-    document.getElementById('welcomeName').textContent = 'Kumusta, ' + user.name + '! 🔥';
-    document.getElementById('welcomeEmail').textContent = user.email;
+    document.getElementById('sideName').textContent = user.name;
+    document.getElementById('sideEmail').textContent = user.email;
+    document.getElementById('welcomeName').textContent = user.name;
     document.getElementById('creditDisplay').textContent = '💎 ' + (user.credits || 0) + ' Credits';
+    document.getElementById('statCredits').textContent = user.credits || 0;
+    document.getElementById('statVideos').textContent = user.videos || 0;
+    document.getElementById('statSince').textContent = user.since || 'Today';
   }
 
-  // ============ BUY CREDITS ============
   function buyCredits(amount) {
     const session = getSession();
-    if (!session) return;
     const users = getUsers();
     const user = users.find(u => u.email === session.email);
     user.credits = (user.credits || 0) + amount;
     saveUsers(users);
-    alert('✅ Nagdagdag ng ' + amount + ' credits! (Demo — walang totoong bayad)');
-    showScreen('welcomeScreen');
+    alert('✅ Added ' + amount + ' credits!');
+    updateDashboard();
   }
 
-  // ============ GENERATE VIDEO ============
   function generateVideo() {
     const session = getSession();
     const users = getUsers();
     const user = users.find(u => u.email === session.email);
     const prompt = document.getElementById('promptInput').value.trim();
 
-    if (!prompt) { alert('Maglagay ng prompt!'); return; }
-    if ((user.credits || 0) < 1) { alert('❌ Kulang ang credits! Bumili muna.'); return; }
+    if (!prompt) { alert('Please enter a prompt!'); return; }
+    if ((user.credits || 0) < 1) { alert('❌ Not enough credits!'); return; }
 
     user.credits -= 1;
+    user.videos = (user.videos || 0) + 1;
     saveUsers(users);
-    alert('🎬 Nagge-generate ng video para sa: "' + prompt + '"\n(Demo lang ito — i-connect sa totoong AI API para gumana)');
-    showScreen('welcomeScreen');
-  }
-
-  // ============ ADMIN ============
-  function showAdminOrLogout() {
-    const session = getSession();
-    if (!session) return;
-    if (session.email === ADMIN_EMAIL) {
-      showScreen('adminWide');
-    } else {
-      alert('❌ Hindi ka admin. Regular user ka lang.');
-    }
+    alert('🎬 Generating: "' + prompt + '"\n(Demo — 1 credit used)');
+    updateDashboard();
   }
 
   function renderAdminTable() {
     const users = getUsers();
-    const tbody = document.getElementById('adminTableWide') || document.getElementById('adminTable');
-    if (!tbody) return;
+    const tbody = document.getElementById('adminTable');
+
+    document.getElementById('totalUsers').textContent = users.length;
+    document.getElementById('totalCredits').textContent = users.reduce((a, u) => a + (u.credits || 0), 0);
 
     if (users.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" class="empty">Walang accounts pa.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#5a3030;padding:40px;">No accounts yet.</td></tr>';
       return;
     }
 
     tbody.innerHTML = users.map((u, i) => `
       <tr>
-        <td>${u.name}</td>
+        <td><strong style="color:#fff;">${u.name}</strong></td>
         <td>${u.email}</td>
         <td>${u.age}</td>
-        <td style="color:#ff5252;font-weight:bold;">${u.credits || 0}</td>
+        <td style="color:#ff5252;font-weight:800;">${u.credits || 0}</td>
         <td>
           <div class="actions">
-            <button class="btn-sm btn-green" onclick="adminGiveCredits(${i})">+ Credits</button>
-            <button class="btn-sm btn-red" onclick="adminDelete(${i})">Delete</button>
+            <button class="btn-sm btn-green" onclick="giveCredits(${i})">+ Credits</button>
+            <button class="btn-sm btn-red" onclick="deleteUser(${i})">Delete</button>
           </div>
         </td>
       </tr>
     `).join('');
   }
 
-  function adminGiveCredits(index) {
-    const amount = prompt('Ilang credits ang ibibigay?');
+  function giveCredits(index) {
+    const amount = prompt('How many credits?');
     if (!amount || isNaN(amount)) return;
     const users = getUsers();
     users[index].credits = (users[index].credits || 0) + parseInt(amount);
     saveUsers(users);
     renderAdminTable();
-    alert('✅ Nagdagdag ng ' + amount + ' credits kay ' + users[index].name);
   }
 
-  function adminDelete(index) {
+  function deleteUser(index) {
     const users = getUsers();
-    if (!confirm('Sigurado ka bang ide-delete si ' + users[index].name + '?')) return;
+    if (!confirm('Delete ' + users[index].name + '?')) return;
     users.splice(index, 1);
     saveUsers(users);
     renderAdminTable();
-    alert('🗑️ Na-delete na.');
   }
 
-  // ============ AUTO LOGIN ============
   window.onload = function () {
-    const session = getSession();
-    if (session) {
-      const user = getUsers().find(u => u.email === session.email);
-      if (user) showScreen('welcomeScreen');
-      else { clearSession(); showScreen('loginScreen'); }
+    if (getSession()) {
+      updateDashboard();
+      showScreen('dashboardScreen');
     } else {
       showScreen('registerScreen');
     }
