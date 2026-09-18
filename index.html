@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zyrox AI — Login</title>
+  <title>Zyrox AI</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -11,10 +11,10 @@
       background: #0d0505;
       color: #fff;
       min-height: 100vh;
+      padding: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
     }
     .card {
       background: #160808;
@@ -22,277 +22,427 @@
       border-radius: 20px;
       padding: 40px 30px;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       box-shadow: 0 10px 40px rgba(255, 0, 0, 0.08);
     }
+    .wide { max-width: 900px; }
     .logo {
-      width: 65px;
-      height: 65px;
-      background: #ff2b2b;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 34px;
-      font-weight: 900;
-      color: #fff;
-      box-shadow: 0 0 35px rgba(255, 43, 43, 0.6);
+      width: 65px; height: 65px;
+      background: #ff2b2b; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 15px; font-size: 34px; font-weight: 900;
+      color: #fff; box-shadow: 0 0 35px rgba(255, 43, 43, 0.6);
     }
     h1 {
-      text-align: center;
-      font-size: 30px;
-      letter-spacing: 1px;
+      text-align: center; font-size: 30px; letter-spacing: 1px;
       margin-bottom: 5px;
       background: linear-gradient(90deg, #ff2b2b, #ff6b6b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
+    h2 { font-size: 20px; margin-bottom: 15px; color: #ff5252; }
     .subtitle {
-      text-align: center;
-      color: #8a5555;
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 30px;
+      text-align: center; color: #8a5555; font-size: 11px;
+      letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px;
     }
     label {
-      display: block;
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: #b08080;
-      margin-bottom: 8px;
-      margin-top: 18px;
+      display: block; font-size: 12px; font-weight: bold;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: #b08080; margin-bottom: 8px; margin-top: 16px;
     }
-    input {
-      width: 100%;
-      padding: 14px 16px;
-      background: #0d0505;
-      border: 1px solid #2a1010;
-      border-radius: 10px;
-      color: #fff;
-      font-size: 15px;
-      outline: none;
-      transition: border 0.2s, box-shadow 0.2s;
+    input, select {
+      width: 100%; padding: 14px 16px;
+      background: #0d0505; border: 1px solid #2a1010;
+      border-radius: 10px; color: #fff; font-size: 15px;
+      outline: none; transition: 0.2s;
     }
-    input:focus {
+    input:focus, select:focus {
       border-color: #ff2b2b;
       box-shadow: 0 0 0 3px rgba(255, 43, 43, 0.15);
     }
     input::placeholder { color: #5a3030; }
-    .hint { font-size: 11px; color: #8a5555; margin-top: 6px; }
     button {
-      width: 100%;
-      padding: 16px;
+      width: 100%; padding: 15px;
       background: linear-gradient(90deg, #ff2b2b, #ff5252);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 25px;
-      transition: all 0.2s;
+      color: #fff; border: none; border-radius: 10px;
+      font-size: 15px; font-weight: bold; cursor: pointer;
+      margin-top: 20px; transition: 0.2s;
       box-shadow: 0 0 25px rgba(255, 43, 43, 0.4);
-      letter-spacing: 0.5px;
     }
-    button:hover {
-      box-shadow: 0 0 40px rgba(255, 43, 43, 0.7);
-      transform: translateY(-1px);
-    }
+    button:hover { box-shadow: 0 0 40px rgba(255, 43, 43, 0.7); transform: translateY(-1px); }
+    .btn-sm { padding: 8px 12px; font-size: 12px; margin: 0; width: auto; }
+    .btn-green { background: linear-gradient(90deg, #00b85c, #00ff88); box-shadow: 0 0 20px rgba(0,255,136,0.3); }
+    .btn-gray { background: #2a1010; box-shadow: none; }
+    .btn-red { background: linear-gradient(90deg, #b80000, #ff2b2b); }
     .switch {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 13px;
-      color: #8a5555;
+      text-align: center; margin-top: 18px;
+      font-size: 13px; color: #8a5555;
     }
-    .switch a {
-      color: #ff5252;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
+    .switch a { color: #ff5252; font-weight: bold; cursor: pointer; text-decoration: none; }
     .footer {
-      text-align: center;
-      margin-top: 25px;
-      padding-top: 20px;
-      border-top: 1px solid #2a1010;
-      font-size: 11px;
-      color: #5a3030;
+      text-align: center; margin-top: 22px; padding-top: 18px;
+      border-top: 1px solid #2a1010; font-size: 11px; color: #5a3030;
     }
-    #welcomeScreen { display: none; text-align: center; }
-    #welcomeScreen h1 { font-size: 30px; margin-bottom: 12px; }
-    #welcomeScreen p { color: #b08080; margin-bottom: 8px; }
     .badge {
-      display: inline-block;
-      background: #1a0808;
-      border: 1px solid #ff2b2b;
-      color: #ff5252;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      margin-top: 15px;
+      display: inline-block; background: #1a0808;
+      border: 1px solid #ff2b2b; color: #ff5252;
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 12px; margin-top: 10px;
     }
-    .ai-btn { margin-top: 25px; }
-    .logout-btn {
-      background: #2a1010 !important;
-      box-shadow: none !important;
+    .credit-badge {
+      display: inline-block; background: linear-gradient(90deg,#ff2b2b,#ff5252);
+      color: #fff; padding: 8px 18px; border-radius: 20px;
+      font-size: 14px; font-weight: bold; margin-top: 12px;
     }
+    /* Admin table */
+    table {
+      width: 100%; border-collapse: collapse; margin-top: 15px;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 10px; text-align: left;
+      border-bottom: 1px solid #2a1010;
+    }
+    th { color: #ff5252; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+    td { color: #c0a0a0; }
+    .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .hidden { display: none !important; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+    .tab {
+      flex: 1; padding: 10px; text-align: center;
+      background: #0d0505; border: 1px solid #2a1010;
+      border-radius: 10px; cursor: pointer; font-size: 13px;
+      color: #8a5555; transition: 0.2s;
+    }
+    .tab.active { background: #2a1010; color: #ff5252; border-color: #ff2b2b; }
+    .credit-packs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
+    .pack {
+      background: #0d0505; border: 1px solid #2a1010;
+      border-radius: 12px; padding: 18px 10px; text-align: center;
+      cursor: pointer; transition: 0.2s;
+    }
+    .pack:hover { border-color: #ff2b2b; box-shadow: 0 0 20px rgba(255,43,43,0.3); }
+    .pack .amount { font-size: 22px; font-weight: bold; color: #ff5252; }
+    .pack .price { font-size: 12px; color: #8a5555; margin-top: 5px; }
+    .empty { text-align: center; color: #5a3030; padding: 30px 0; font-size: 13px; }
   </style>
 </head>
 <body>
 
-  <div class="card">
+<div class="card" id="app">
 
-    <!-- REGISTER SCREEN -->
-    <div id="registerScreen">
-      <div class="logo">Z</div>
-      <h1>ZYROX AI</h1>
-      <p class="subtitle">Create your account</p>
-
-      <label>Name</label>
-      <input type="text" id="regName" placeholder="Enter your name">
-
-      <label>Gmail</label>
-      <input type="email" id="regEmail" placeholder="Enter your Gmail">
-
-      <label>Password</label>
-      <input type="password" id="regPassword" placeholder="Enter your password">
-      <p class="hint">Minimum 6 characters</p>
-
-      <label>Age</label>
-      <input type="number" id="regAge" placeholder="Enter your age">
-
-      <button onclick="register()">🔥 Register</button>
-
-      <p class="switch">Already have an account? <a onclick="showLogin()">Login</a></p>
-      <p class="footer">© 2026 Zyrox AI — All rights reserved</p>
-    </div>
-
-    <!-- LOGIN SCREEN -->
-    <div id="loginScreen" style="display:none;">
-      <div class="logo">Z</div>
-      <h1>ZYROX AI</h1>
-      <p class="subtitle">Login to your account</p>
-
-      <label>Gmail</label>
-      <input type="email" id="loginEmail" placeholder="Enter your Gmail">
-
-      <label>Password</label>
-      <input type="password" id="loginPassword" placeholder="Enter your password">
-
-      <button onclick="login()">🔐 Login</button>
-
-      <p class="switch">Don't have an account? <a onclick="showRegister()">Register</a></p>
-      <p class="footer">© 2026 Zyrox AI — All rights reserved</p>
-    </div>
-
-    <!-- WELCOME SCREEN -->
-    <div id="welcomeScreen">
-      <div class="logo">Z</div>
-      <h1 id="welcomeName">Kumusta!</h1>
-      <p id="welcomeEmail"></p>
-      <span class="badge" id="welcomeAge"></span>
-      <button class="ai-btn" onclick="alert('AI Video Generator — coming soon!')">🎬 Generate AI Video</button>
-      <button class="logout-btn" onclick="logout()">Logout</button>
-    </div>
-
+  <!-- REGISTER -->
+  <div id="registerScreen">
+    <div class="logo">Z</div>
+    <h1>ZYROX AI</h1>
+    <p class="subtitle">Create your account</p>
+    <label>Name</label>
+    <input type="text" id="regName" placeholder="Enter your name">
+    <label>Gmail</label>
+    <input type="email" id="regEmail" placeholder="Enter your Gmail">
+    <label>Password</label>
+    <input type="password" id="regPassword" placeholder="Enter your password">
+    <label>Age</label>
+    <input type="number" id="regAge" placeholder="Enter your age">
+    <button onclick="register()">🔥 Register</button>
+    <p class="switch">Already have an account? <a onclick="showScreen('loginScreen')">Login</a></p>
+    <p class="footer">© 2026 Zyrox AI</p>
   </div>
 
-  <script>
-    // ===== REGISTER =====
-    function register() {
-      const name = document.getElementById('regName').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const password = document.getElementById('regPassword').value;
-      const age = document.getElementById('regAge').value.trim();
+  <!-- LOGIN -->
+  <div id="loginScreen" class="hidden">
+    <div class="logo">Z</div>
+    <h1>ZYROX AI</h1>
+    <p class="subtitle">Login to your account</p>
+    <label>Gmail</label>
+    <input type="email" id="loginEmail" placeholder="Enter your Gmail">
+    <label>Password</label>
+    <input type="password" id="loginPassword" placeholder="Enter your password">
+    <button onclick="login()">🔐 Login</button>
+    <p class="switch">Don't have an account? <a onclick="showScreen('registerScreen')">Register</a></p>
+    <p class="footer">© 2026 Zyrox AI</p>
+  </div>
 
-      if (!name) { alert('Ilagay ang iyong pangalan!'); return; }
-      if (!email.includes('@')) { alert('Ilagay ang tamang Gmail!'); return; }
-      if (password.length < 6) { alert('Ang password ay dapat 6+ characters!'); return; }
-      if (!age) { alert('Ilagay ang iyong edad!'); return; }
+  <!-- WELCOME / USER DASHBOARD -->
+  <div id="welcomeScreen" class="hidden" style="text-align:center;">
+    <div class="logo">Z</div>
+    <h1 id="welcomeName">Kumusta!</h1>
+    <p id="welcomeEmail" style="color:#b08080;margin-top:8px;"></p>
+    <span class="credit-badge" id="creditDisplay">💎 0 Credits</span>
+    <div style="margin-top:20px;">
+      <button onclick="showScreen('buyScreen')">💳 Buy Credits</button>
+      <button onclick="showScreen('generatorScreen')">🎬 Generate AI Video</button>
+      <button class="btn-gray" onclick="showAdminOrLogout()">⚙️ Admin Panel</button>
+      <button class="btn-gray" onclick="logout()">Logout</button>
+    </div>
+  </div>
 
-      // I-save ang account
-      const account = { name, email, password, age };
-      localStorage.setItem('zyrox_account', JSON.stringify(account));
+  <!-- BUY CREDITS -->
+  <div id="buyScreen" class="hidden">
+    <h2>💳 Buy Credits</h2>
+    <p style="color:#8a5555;font-size:13px;">Pumili ng package para dagdagan ang iyong credits.</p>
+    <div class="credit-packs">
+      <div class="pack" onclick="buyCredits(10)">
+        <div class="amount">10</div>
+        <div class="price">₱50</div>
+      </div>
+      <div class="pack" onclick="buyCredits(50)">
+        <div class="amount">50</div>
+        <div class="price">₱200</div>
+      </div>
+      <div class="pack" onclick="buyCredits(150)">
+        <div class="amount">150</div>
+        <div class="price">₱500</div>
+      </div>
+    </div>
+    <button class="btn-gray" onclick="showScreen('welcomeScreen')" style="margin-top:20px;">← Back</button>
+  </div>
 
-      alert('✅ Account created! Mag-login ka na ngayon.');
-      showLogin();
+  <!-- GENERATOR -->
+  <div id="generatorScreen" class="hidden">
+    <h2>🎬 AI Video Generator</h2>
+    <p style="color:#8a5555;font-size:13px;">Gumawa ng AI video (demo lang — 1 credit bawat generate).</p>
+    <label>Prompt</label>
+    <input type="text" id="promptInput" placeholder="e.g. Baby Shark dancing underwater">
+    <button onclick="generateVideo()">✨ Generate (1 credit)</button>
+    <button class="btn-gray" onclick="showScreen('welcomeScreen')">← Back</button>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div id="adminScreen" class="hidden">
+    <h2>👑 Admin Panel</h2>
+    <p style="color:#8a5555;font-size:13px;">Lahat ng accounts na nag-register.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Gmail</th>
+          <th>Age</th>
+          <th>Credits</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="adminTable"></tbody>
+    </table>
+    <button class="btn-gray" onclick="showScreen('welcomeScreen')">← Back</button>
+  </div>
+
+  <!-- ADMIN PANEL (WIDE) -->
+  <div id="adminWide" class="wide hidden">
+    <h2>👑 Admin Panel</h2>
+    <p style="color:#8a5555;font-size:13px;">Lahat ng accounts na nag-register.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Gmail</th>
+          <th>Age</th>
+          <th>Credits</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="adminTableWide"></tbody>
+    </table>
+    <button class="btn-gray" onclick="showScreen('welcomeScreen')">← Back</button>
+  </div>
+
+</div>
+
+<script>
+  // ============ ADMIN CONFIG ============
+  // Ito ang admin email. Palitan mo ng sarili mong Gmail.
+  const ADMIN_EMAIL = "admin@zyrox.com";
+
+  // ============ STORAGE HELPERS ============
+  function getUsers() {
+    return JSON.parse(localStorage.getItem('zyrox_users') || '[]');
+  }
+  function saveUsers(users) {
+    localStorage.setItem('zyrox_users', JSON.stringify(users));
+  }
+  function getSession() {
+    return JSON.parse(localStorage.getItem('zyrox_session') || 'null');
+  }
+  function saveSession(user) {
+    localStorage.setItem('zyrox_session', JSON.stringify(user));
+  }
+  function clearSession() {
+    localStorage.removeItem('zyrox_session');
+  }
+
+  // ============ SCREEN NAVIGATION ============
+  function showScreen(id) {
+    ['registerScreen','loginScreen','welcomeScreen','buyScreen','generatorScreen','adminScreen','adminWide']
+      .forEach(s => document.getElementById(s).classList.add('hidden'));
+
+    const screen = document.getElementById(id);
+    screen.classList.remove('hidden');
+
+    // Palitan ang card width kung admin
+    const card = document.getElementById('app');
+    if (id === 'adminWide') {
+      card.classList.add('wide');
+    } else {
+      card.classList.remove('wide');
     }
 
-    // ===== LOGIN =====
-    function login() {
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value;
+    if (id === 'adminWide' || id === 'adminScreen') renderAdminTable();
+    if (id === 'welcomeScreen') updateWelcome();
+  }
 
-      const saved = localStorage.getItem('zyrox_account');
-      if (!saved) {
-        alert('❌ Walang account! Mag-register ka muna.');
-        showRegister();
-        return;
-      }
+  // ============ REGISTER ============
+  function register() {
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim().toLowerCase();
+    const password = document.getElementById('regPassword').value;
+    const age = document.getElementById('regAge').value.trim();
 
-      const account = JSON.parse(saved);
-
-      // I-check kung tugma ang email at password
-      if (email !== account.email) {
-        alert('❌ Mali ang Gmail! Subukan muli.');
-        return;
-      }
-      if (password !== account.password) {
-        alert('❌ Mali ang password! Subukan muli.');
-        return;
-      }
-
-      // Success — i-save ang session
-      localStorage.setItem('zyrox_session', JSON.stringify({
-        name: account.name,
-        email: account.email,
-        age: account.age
-      }));
-
-      alert('✅ Login successful!');
-      showWelcome(account.name, account.email, account.age);
+    if (!name || !email.includes('@') || password.length < 6 || !age) {
+      alert('Punuin lahat ng fields. Password 6+ characters, valid Gmail.');
+      return;
     }
 
-    // ===== SCREEN SWITCHERS =====
-    function showRegister() {
-      document.getElementById('registerScreen').style.display = 'block';
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('welcomeScreen').style.display = 'none';
+    const users = getUsers();
+    if (users.find(u => u.email === email)) {
+      alert('❌ May account na gamit ang Gmail na ito!');
+      return;
     }
 
-    function showLogin() {
-      document.getElementById('registerScreen').style.display = 'none';
-      document.getElementById('loginScreen').style.display = 'block';
-      document.getElementById('welcomeScreen').style.display = 'none';
+    users.push({ name, email, password, age, credits: 0 });
+    saveUsers(users);
+    alert('✅ Account created! Mag-login ka na.');
+    showScreen('loginScreen');
+  }
+
+  // ============ LOGIN ============
+  function login() {
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const password = document.getElementById('loginPassword').value;
+
+    const users = getUsers();
+    const user = users.find(u => u.email === email);
+
+    if (!user) { alert('❌ Walang account sa Gmail na ito. Mag-register ka muna.'); return; }
+    if (user.password !== password) { alert('❌ Mali ang password!'); return; }
+
+    saveSession({ email: user.email });
+    alert('✅ Login successful!');
+    showScreen('welcomeScreen');
+  }
+
+  // ============ LOGOUT ============
+  function logout() {
+    clearSession();
+    showScreen('loginScreen');
+  }
+
+  // ============ UPDATE WELCOME ============
+  function updateWelcome() {
+    const session = getSession();
+    if (!session) { showScreen('loginScreen'); return; }
+    const user = getUsers().find(u => u.email === session.email);
+    if (!user) { clearSession(); showScreen('loginScreen'); return; }
+
+    document.getElementById('welcomeName').textContent = 'Kumusta, ' + user.name + '! 🔥';
+    document.getElementById('welcomeEmail').textContent = user.email;
+    document.getElementById('creditDisplay').textContent = '💎 ' + (user.credits || 0) + ' Credits';
+  }
+
+  // ============ BUY CREDITS ============
+  function buyCredits(amount) {
+    const session = getSession();
+    if (!session) return;
+    const users = getUsers();
+    const user = users.find(u => u.email === session.email);
+    user.credits = (user.credits || 0) + amount;
+    saveUsers(users);
+    alert('✅ Nagdagdag ng ' + amount + ' credits! (Demo — walang totoong bayad)');
+    showScreen('welcomeScreen');
+  }
+
+  // ============ GENERATE VIDEO ============
+  function generateVideo() {
+    const session = getSession();
+    const users = getUsers();
+    const user = users.find(u => u.email === session.email);
+    const prompt = document.getElementById('promptInput').value.trim();
+
+    if (!prompt) { alert('Maglagay ng prompt!'); return; }
+    if ((user.credits || 0) < 1) { alert('❌ Kulang ang credits! Bumili muna.'); return; }
+
+    user.credits -= 1;
+    saveUsers(users);
+    alert('🎬 Nagge-generate ng video para sa: "' + prompt + '"\n(Demo lang ito — i-connect sa totoong AI API para gumana)');
+    showScreen('welcomeScreen');
+  }
+
+  // ============ ADMIN ============
+  function showAdminOrLogout() {
+    const session = getSession();
+    if (!session) return;
+    if (session.email === ADMIN_EMAIL) {
+      showScreen('adminWide');
+    } else {
+      alert('❌ Hindi ka admin. Regular user ka lang.');
+    }
+  }
+
+  function renderAdminTable() {
+    const users = getUsers();
+    const tbody = document.getElementById('adminTableWide') || document.getElementById('adminTable');
+    if (!tbody) return;
+
+    if (users.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" class="empty">Walang accounts pa.</td></tr>';
+      return;
     }
 
-    function showWelcome(name, email, age) {
-      document.getElementById('registerScreen').style.display = 'none';
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('welcomeScreen').style.display = 'block';
-      document.getElementById('welcomeName').textContent = 'Kumusta, ' + name + '! 🔥';
-      document.getElementById('welcomeEmail').textContent = email;
-      document.getElementById('welcomeAge').textContent = 'Age: ' + age;
-    }
+    tbody.innerHTML = users.map((u, i) => `
+      <tr>
+        <td>${u.name}</td>
+        <td>${u.email}</td>
+        <td>${u.age}</td>
+        <td style="color:#ff5252;font-weight:bold;">${u.credits || 0}</td>
+        <td>
+          <div class="actions">
+            <button class="btn-sm btn-green" onclick="adminGiveCredits(${i})">+ Credits</button>
+            <button class="btn-sm btn-red" onclick="adminDelete(${i})">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
 
-    function logout() {
-      localStorage.removeItem('zyrox_session');
-      location.reload();
-    }
+  function adminGiveCredits(index) {
+    const amount = prompt('Ilang credits ang ibibigay?');
+    if (!amount || isNaN(amount)) return;
+    const users = getUsers();
+    users[index].credits = (users[index].credits || 0) + parseInt(amount);
+    saveUsers(users);
+    renderAdminTable();
+    alert('✅ Nagdagdag ng ' + amount + ' credits kay ' + users[index].name);
+  }
 
-    // ===== AUTO LOGIN KUNG MAY SESSION =====
-    window.onload = function () {
-      const session = localStorage.getItem('zyrox_session');
-      if (session) {
-        const user = JSON.parse(session);
-        showWelcome(user.name, user.email, user.age);
-      }
-    };
-  </script>
+  function adminDelete(index) {
+    const users = getUsers();
+    if (!confirm('Sigurado ka bang ide-delete si ' + users[index].name + '?')) return;
+    users.splice(index, 1);
+    saveUsers(users);
+    renderAdminTable();
+    alert('🗑️ Na-delete na.');
+  }
+
+  // ============ AUTO LOGIN ============
+  window.onload = function () {
+    const session = getSession();
+    if (session) {
+      const user = getUsers().find(u => u.email === session.email);
+      if (user) showScreen('welcomeScreen');
+      else { clearSession(); showScreen('loginScreen'); }
+    } else {
+      showScreen('registerScreen');
+    }
+  };
+</script>
 
 </body>
 </html>
