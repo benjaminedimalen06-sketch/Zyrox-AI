@@ -55,8 +55,12 @@
       0%, 100% { background-position: 0% center; }
       50% { background-position: 100% center; }
     }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
 
-    /* ============ GLASS CARD ============ */
+    /* ============ CARD ============ */
     .card {
       background: linear-gradient(145deg, rgba(22, 8, 8, 0.85), rgba(10, 3, 3, 0.95));
       backdrop-filter: blur(20px);
@@ -225,6 +229,11 @@
       letter-spacing: 1.5px;
     }
     button:active { transform: translateY(0); }
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
 
     .btn-sm {
       padding: 10px 16px;
@@ -562,6 +571,46 @@
       font-weight: 700; letter-spacing: 1px;
     }
 
+    /* ============ LOADING SPINNER ============ */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* ============ VIDEO RESULT ============ */
+    .video-result {
+      margin-top: 25px;
+      padding: 20px;
+      background: rgba(8, 2, 2, 0.6);
+      border: 1px solid rgba(60, 20, 20, 0.6);
+      border-radius: 16px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .video-result video,
+    .video-result img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(255, 43, 43, 0.3);
+    }
+
+    .video-result a {
+      display: inline-block;
+      color: var(--red-light);
+      text-decoration: none;
+      font-weight: 700;
+      margin-top: 12px;
+      word-break: break-all;
+      font-size: 12px;
+    }
+
     .hidden { display: none !important; }
 
     /* ============ SCROLLBAR ============ */
@@ -688,9 +737,14 @@
     <div id="genPanel" class="dash-panel hidden">
       <h2>🎬 AI Video Generator</h2>
       <p class="panel-desc">Generate an AI video (1 credit per generation).</p>
+
       <label>Prompt</label>
       <input type="text" id="promptInput" placeholder="e.g. Baby Shark dancing underwater">
-      <button onclick="generateVideo()">✨ GENERATE (1 credit)</button>
+
+      <button id="genBtn" onclick="generateVideo(event)">✨ GENERATE (1 credit)</button>
+
+      <!-- RESULT AREA -->
+      <div id="videoResult" class="video-result hidden"></div>
     </div>
 
     <!-- ADMIN -->
@@ -720,12 +774,16 @@
 </div>
 
 <script>
-  const ADMIN_EMAIL = "benjaminedimalen06@gmail.com"; // ← CHANGE TO YOUR OWN GMAIL
+  // ============ CONFIG ============
+  const ADMIN_EMAIL = "admin@zyrox.com"; // ← CHANGE TO YOUR OWN GMAIL
+  const PROXY_URL = "https://zyrox-proxy.onrender.com/api/generate"; // ← CHANGE TO YOUR RENDER PROXY URL
 
+  // ============ STORAGE ============
   function getUsers() { return JSON.parse(localStorage.getItem('zyrox_users') || '[]'); }
   function saveUsers(u) { localStorage.setItem('zyrox_users', JSON.stringify(u)); }
   function getSession() { return JSON.parse(localStorage.getItem('zyrox_session') || 'null'); }
 
+  // ============ NAVIGATION ============
   function showScreen(id) {
     ['registerScreen','loginScreen','dashboardScreen'].forEach(s => {
       document.getElementById(s).classList.add('hidden');
@@ -747,6 +805,7 @@
     if (id === 'adminPanel') renderAdminTable();
   }
 
+  // ============ REGISTER ============
   function register() {
     const name = document.getElementById('regName').value.trim();
     const email = document.getElementById('regEmail').value.trim().toLowerCase();
@@ -774,6 +833,7 @@
     showScreen('loginScreen');
   }
 
+  // ============ LOGIN ============
   function login() {
     const email = document.getElementById('loginEmail').value.trim().toLowerCase();
     const password = document.getElementById('loginPassword').value;
@@ -794,6 +854,7 @@
     showScreen('loginScreen');
   }
 
+  // ============ DASHBOARD ============
   function updateDashboard() {
     const session = getSession();
     if (!session) { showScreen('loginScreen'); return; }
@@ -809,6 +870,7 @@
     document.getElementById('statSince').textContent = user.since || 'Today';
   }
 
+  // ============ BUY CREDITS ============
   function buyCredits(amount) {
     const session = getSession();
     const users = getUsers();
@@ -819,7 +881,8 @@
     updateDashboard();
   }
 
-  function generateVideo() {
+  // ============ GENERATE VIDEO (REAL AI) ============
+  async function generateVideo(event) {
     const session = getSession();
     const users = getUsers();
     const user = users.find(u => u.email === session.email);
@@ -828,13 +891,62 @@
     if (!prompt) { alert('Please enter a prompt!'); return; }
     if ((user.credits || 0) < 1) { alert('❌ Not enough credits!'); return; }
 
-    user.credits -= 1;
-    user.videos = (user.videos || 0) + 1;
-    saveUsers(users);
-    alert('🎬 Generating: "' + prompt + '"\n(Demo — 1 credit used)');
-    updateDashboard();
+    const btn = document.getElementById('genBtn');
+    const resultBox = document.getElementById('videoResult');
+
+    // Show loading
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Generating... this may take 30-90 seconds';
+    resultBox.classList.add('hidden');
+    resultBox.innerHTML = '';
+
+    try {
+      const response = await fetch(PROXY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.videoUrl) {
+        // Deduct credit
+        user.credits -= 1;
+        user.videos = (user.videos || 0) + 1;
+        saveUsers(users);
+        updateDashboard();
+
+        // Display result
+        let mediaHtml = '';
+        const url = Array.isArray(data.videoUrl) ? data.videoUrl[0] : data.videoUrl;
+        const urlStr = String(url);
+
+        if (urlStr.match(/\.(mp4|webm|mov)$/i)) {
+          mediaHtml = `<video controls autoplay loop><source src="${urlStr}" type="video/mp4"></video>`;
+        } else if (urlStr.match(/\.(png|jpg|jpeg|gif|webp)$/i)) {
+          mediaHtml = `<img src="${urlStr}" alt="AI Result">`;
+        } else {
+          mediaHtml = `<p style="color:#ff9090;">Result generated!</p>`;
+        }
+
+        resultBox.innerHTML = `
+          ${mediaHtml}
+          <a href="${urlStr}" target="_blank">🔗 Open full result</a>
+        `;
+        resultBox.classList.remove('hidden');
+      } else {
+        alert('❌ Generation failed: ' + (data.error || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error(err);
+      alert('❌ Could not connect to AI service.\nThe free Render instance may be waking up — try again in 30 seconds.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '✨ GENERATE (1 credit)';
+    }
   }
 
+  // ============ ADMIN ============
   function renderAdminTable() {
     const users = getUsers();
     const tbody = document.getElementById('adminTable');
@@ -880,6 +992,7 @@
     renderAdminTable();
   }
 
+  // ============ INIT ============
   window.onload = function () {
     if (getSession()) {
       updateDashboard();
